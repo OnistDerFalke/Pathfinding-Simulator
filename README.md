@@ -35,10 +35,10 @@ Applies changes on map size and removes all obstacles and move start and end to 
 
 Algorithm used in this solution is AStar. Algorithm was implemented from scratch. It uses Manhattan Distance heuristics. It was proven that it is more effective than standard Euclidean Distance for discrete grids. Algorithm was tested on bigger maps with random obstacles. It works as fast that there is no possibility to check efficiency on larger map because of limited memory for tile grid in this project. AStar algorithm is one of most popular heuristic pathfinding algorithm. It works really fast with well chosen heuristics and gives possibility to work with different movement costs.
 
-AStar returns shortest path from start to end. It uses specific implementation of the binary heap because it makes helps find nodes with the lowest costs quickly during graph exploration. 
+AStar returns shortest path from start to end. It uses specific implementation of the binary heap because it helps to find nodes with the lowest costs quickly during graph exploration. 
 
 ## References
 [1] *A Systematic Literature Review of A\* Pathfinding*, Daniel Foeada, Alifio Ghifaria, Marchel Budi Kusumaa, Novita Hanafiahb, Eric
 Gunawanb. Source: https://www.sciencedirect.com/science/article/pii/S1877050921000399.
 
-[2] *Application of A-Star Algorithm on Pathfinding Game* Ade Candra1, Mohammad Andri Budiman and Rahmat Irfan Pohan. Source: https://iopscience.iop.org/article/10.1088/1742-6596/1898/1/012047/meta
+[2] *Application of A-Star Algorithm on Pathfinding Game* Ade Candra, Mohammad Andri Budiman and Rahmat Irfan Pohan. Source: https://iopscience.iop.org/article/10.1088/1742-6596/1898/1/012047/meta
