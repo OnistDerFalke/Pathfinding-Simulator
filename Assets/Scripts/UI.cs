@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Text.RegularExpressions;
 
 public class UI : MonoBehaviour
 {
@@ -10,34 +11,51 @@ public class UI : MonoBehaviour
     [SerializeField] private InputField xMapSizeInput;
     [SerializeField] private InputField yMapSizeInput;
 
+    //Buttons that will be disabled in some cases
+    [SerializeField] private Button applyButton;
+    [SerializeField] private Button startButton;
+    [SerializeField] private Button resetButton;
+
+    [SerializeField] private RectTransform progressBarValueRect;
+    [SerializeField] private RectTransform progressBarRect;
+
     //Limit of the size (too many instances may throw memory exception)
     [SerializeField] private Vector2Int mapSizeLimit = new(100, 100);
    
     //Current size of the map, applied when apply button clicked
     private Vector2Int _currentSize;
-
-
+    
     void Start()
     {
+        //Setting UI
+        GameManager.Instance.ui = this;
+        
         xMapSizeInput.onValueChanged.AddListener(ApplyX);
         yMapSizeInput.onValueChanged.AddListener(ApplyY);
     }
-    
+
     void Update()
     {
-        //Changes UI visibility
-        if(Input.GetKeyDown(KeyCode.H))
-            controlPanel.SetActive(!controlPanel.activeSelf);
+        //Disable buttons when animating, only reset button enabled
+        applyButton.interactable = !GameManager.Instance.animator.AnimationInProgress;
+        startButton.interactable = !GameManager.Instance.animator.AnimationInProgress;
+        resetButton.interactable = GameManager.Instance.animator.AnimationInProgress;
+        
+        //Update value in progressbar
+        var newWidth = GameManager.Instance.animator.Progress * 0.98f * progressBarRect.sizeDelta.x;
+        progressBarValueRect.sizeDelta = new Vector2(newWidth, progressBarValueRect.sizeDelta.y);
     }
 
-    //Applies new size
+    public void Toggle()
+    {
+        controlPanel.SetActive(!controlPanel.activeSelf);
+    }
+    
+    //Applies new width
     private void ApplyX(string input)
     {
-        if (!int.TryParse(input, out var result))
-        {
-            GameManager.Instance.broadcaster.Broadcast("Width should be int.");
-            return;
-        }
+        input = Regex.Replace(input, @"[^a-zA-Z0-9 ]", "");
+        int.TryParse(input, out var result);
 
         if (result > mapSizeLimit.x)
         {
@@ -48,14 +66,12 @@ public class UI : MonoBehaviour
         _currentSize.x = result;
     }
     
+    //Applies new height
     private void ApplyY(string input)
     {
-        if (!int.TryParse(input, out var result))
-        {
-            GameManager.Instance.broadcaster.Broadcast("Height should be int.");
-            return;
-        }
-
+        input = Regex.Replace(input, @"[^a-zA-Z0-9 ]", "");
+        int.TryParse(input, out var result);
+        
         if (result > mapSizeLimit.y)
         {
             GameManager.Instance.broadcaster.Broadcast($"Map size height is limited to {mapSizeLimit.y}");
@@ -65,6 +81,7 @@ public class UI : MonoBehaviour
         _currentSize.y = result;
     }
 
+    //Button for applying new map size
     public void OnApplyButton()
     {
         if (_currentSize.x <= 0 || _currentSize.y <= 0)
@@ -72,6 +89,7 @@ public class UI : MonoBehaviour
         GameManager.Instance.mapDriver.GenerateMap(_currentSize);
     }
 
+    //Finding the path on button click
     public void OnFindPathButton()
     {
         GameManager.Instance.mapDriver.ClearWayMarks();
@@ -88,8 +106,21 @@ public class UI : MonoBehaviour
             GameManager.Instance.mapDriver.SetWayTile(t);
     }
 
+    //Button for clearing the path
     public void OnClearButton()
     {
         GameManager.Instance.mapDriver.ClearWayMarks();
+    }
+
+    //Button for starting character animation
+    public void OnStartButton()
+    {
+        GameManager.Instance.animator.RunAnimation(GameManager.Instance.astar.GetAstarPath());
+    }
+
+    //Button for reset character animation
+    public void OnResetButton()
+    {
+        GameManager.Instance.animator.StopAnimation();
     }
 }

@@ -9,10 +9,14 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        HandleObstaclesInteraction();
-        HandleStartEndInteraction();
+        if (!GameManager.Instance.animator.AnimationInProgress)
+        {
+            HandleObstaclesInteraction();
+            HandleStartEndInteraction();
+        }
+
         HandleFreeCam();
-        HandleCameraChange();
+        HandleToggle();
         HandleQuit();
     }
 
@@ -60,10 +64,12 @@ public class PlayerController : MonoBehaviour
     }
 
     //Changes camera mode on click
-    private void HandleCameraChange()
+    private void HandleToggle()
     {
         if (Input.GetKeyDown(KeyCode.P))
             GameManager.Instance.cameraDriver.ChangeCameraMode();
+        if(Input.GetKeyDown(KeyCode.H))
+            GameManager.Instance.ui.Toggle();
     }
 
     private void HandleFreeCam()

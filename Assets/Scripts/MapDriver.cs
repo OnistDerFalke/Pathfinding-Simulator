@@ -26,9 +26,16 @@ public class MapDriver : MonoBehaviour
     {
         //Setting map driver
         GameManager.Instance.mapDriver = this;
+        
         GenerateMap(defaultMapSize);
     }
-    
+
+    //Transforms coordinates to position
+    public Vector3 PlacementToPosition(Vector2Int placement)
+    {
+        var offset = mockTile.transform.localScale.x + offsetBetweenTiles;
+        return new Vector3(placement.x * offset, 0f, placement.y * offset);
+    }
 
     //Generates map of given size
     public void GenerateMap(Vector2Int size)
@@ -60,7 +67,7 @@ public class MapDriver : MonoBehaviour
             {
                 //Rotation never changes, all works on one surface
                 mapTiles[i, j] = Instantiate(
-                    mockTile, new Vector3(i * totalOffset, 0f, j * totalOffset), Quaternion.identity);
+                    mockTile, PlacementToPosition(new Vector2Int(i, j)), Quaternion.identity);
                 mapTiles[i, j].SetActive(true);
                 mapTiles[i, j].GetComponent<TileObject>().placement = new Vector2Int(i, j);
             }

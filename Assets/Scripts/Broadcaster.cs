@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Broadcaster : MonoBehaviour
 { 
     //Broadcast time if time not given
-    [SerializeField] private float defaultBroadcastTime = 2.5f;
+    [SerializeField] private float defaultBroadcastTime = 3f;
         
     //Text where broadcast message is shown
     [SerializeField] private Text broadcastText;
@@ -15,7 +15,7 @@ public class Broadcaster : MonoBehaviour
     //Lock to block two broadcasts in one time
     //If two messages are broadcasted, second is lost
     private bool broadcastLock;
-        
+
     private void Start()
     {
         //Setting broadcaster to be globally available
@@ -25,9 +25,6 @@ public class Broadcaster : MonoBehaviour
     //Shows info, after the time given - it disappears
     private IEnumerator ShowOverTime(string message, float time)
     {
-        if (broadcastLock)
-            yield return null;
-            
         broadcastText.gameObject.SetActive(true);
         broadcastLock = true;
             
@@ -42,7 +39,15 @@ public class Broadcaster : MonoBehaviour
     //Broadcasts message for time given
     public void Broadcast(string message, float time = 0)
     {
-        if (time <= 0) time = defaultBroadcastTime;
+        if (broadcastLock)
+        {
+            broadcastText.text = message;
+            return;
+        }
+        
+        if (time <= 0) 
+            time = defaultBroadcastTime;
+        
         StartCoroutine(ShowOverTime(message, time));
     }
 }

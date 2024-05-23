@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
     public MapDriver mapDriver;
     public Broadcaster broadcaster;
     public Astar astar;
+    public UI ui;
+    public Animator animator;
 
     public static GameManager Instance
     {
