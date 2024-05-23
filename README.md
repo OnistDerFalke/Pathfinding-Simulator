@@ -1,14 +1,17 @@
 # Simple Pathfinder
 Simple pathfinder with AStar algorithm implemented for Unity3D.
 
-## Overview
-### Perspective and orthographic camera modes
+## Perspective and orthographic camera modes
 
-#### Perspective camera
-![image](https://github.com/OnistDerFalke/simple_pathfinder/assets/75864407/eb932439-289b-4029-b8f4-4c8fe1f9565e)
+### Perspective camera
+Useful if we want to see the map in 3D mode and more details on character or tiles. User can scroll in this mode.
+![image](https://github.com/OnistDerFalke/simple_pathfinder/assets/75864407/33fcf975-08e9-4c53-b560-2da2214c8dab)
 
-#### Orthographic camera
-![image](https://github.com/OnistDerFalke/simple_pathfinder/assets/75864407/d47303a4-4327-4650-bfb5-55a741154ade)
+
+### Orthographic camera
+Default. Usefull when we want to see map almost in 2D mode. No scroll option available.
+![image](https://github.com/OnistDerFalke/simple_pathfinder/assets/75864407/245fea80-cc7a-4898-aeed-7c17754b2e58)
+
 
 ## Controls
 * [Esc] - Close application
@@ -20,15 +23,20 @@ Simple pathfinder with AStar algorithm implemented for Unity3D.
 * [W,S,A,D or Arrows] - Move left, right, forward, backward.
 * [Mouse scroll] - Zoom, but works only on projection camera, in orthographics whole map is visible.
 
-## Buttons
+## Animations
+User can play an animation where character walk from start point to end the path which was created by AStar algorithm. Player cannot change start and end points or obstacles during the animation. Player can see the path marked on the map or not during animation.
+
+![image](https://github.com/OnistDerFalke/simple_pathfinder/assets/75864407/01ff2f51-b52f-4e89-a310-4162c68e3d65)
+
+## General Buttons
 ### Clear path
 Clears path leaving only start, end and obstacles.
 ### Find path
-Generates the shortest path using AStar algorithm.
+Generates the shortest path using AStar algorithm. After adding obstacles or start/end points, need to be pressed to update the path.
 ### Apply
 Applies changes on map size and removes all obstacles and move start and end to the corners.
-
-![image](https://github.com/OnistDerFalke/simple_pathfinder/assets/75864407/6d1ec527-32c1-496d-9c9f-9f8b36820156)
+### Animation buttons
+Green to start animation, red to stop animation.
 
 
 ## Pathfinding
